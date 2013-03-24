@@ -2,11 +2,15 @@ package com.longrenle.rfid.fragment;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONStringer;
 
 import com.longrenle.rfid.R;
+import com.longrenle.rfid.ui.control.IFormControl;
+import com.longrenle.rfid.ui.control.impl.FormCheckBoxControl;
+import com.longrenle.rfid.ui.control.impl.FormTextControl;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -54,40 +58,32 @@ public class RightFormFragment extends Fragment {
     	LayoutInflater inflater = LayoutInflater.from(mContext);
     	    	
     	mRootLayout = (RelativeLayout) root.findViewById(R.id.fragment_right_form_rootlayout);
+ 	
+    	addControl(inflater, "text", "Username", 50, 50);
+    	addControl(inflater, "text", "Password", 400, 50);
+    	addControl(inflater, "checkbox", "Remember", 50, 150);
     	
-    	View view = inflater.inflate(R.layout.control_text, null);
-    	((TextView)(view.findViewById(R.id.control_text_lbl))).setText("UserName:");
+    	
+    }
+    
+    private void addControl(LayoutInflater inflater, String type, String label, int x, int y) {
+    	
+    	IFormControl control = null;
+    	if(type.equals("text")) {
+    		control = new FormTextControl();
+    	} else if (type.equals("checkbox")) {
+    		control = new FormCheckBoxControl();
+    	}
+    	
+    	View view = control.getView(inflater);
+    	mRootLayout.addView(view);
     	
     	RelativeLayout.LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
     														ViewGroup.LayoutParams.WRAP_CONTENT);
     	lp.alignWithParent = true;
-    	lp.setMargins(50, 50, 0, 0);
-    	view.setLayoutParams(lp);
-    	
-    	mRootLayout.addView(view);
-    	
-    	View view2 = inflater.inflate(R.layout.control_text, null);
-    	((TextView)(view2.findViewById(R.id.control_text_lbl))).setText("Password:");
-    	
-    	RelativeLayout.LayoutParams lp2 = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-    														ViewGroup.LayoutParams.WRAP_CONTENT);
-    	lp2.alignWithParent = true;
-    	lp2.setMargins(400, 50, 0, 0);
-    	view2.setLayoutParams(lp2);
-    	
-    	mRootLayout.addView(view2);
-    	
-    	View view3 = inflater.inflate(R.layout.control_checkbox, null);
-    	((TextView)(view3.findViewById(R.id.control_cbx_lbl))).setText("记住密码");
-    	
-    	
-    	RelativeLayout.LayoutParams lp3 = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-    														ViewGroup.LayoutParams.WRAP_CONTENT);
-    	lp3.alignWithParent = true;
-    	lp3.setMargins(50, 150, 0, 0);
-    	view3.setLayoutParams(lp3);
-    	
-    	mRootLayout.addView(view3);
+    	lp.setMargins(x, y, 0, 0);
+    	control.setLayoutParame(lp);
+    	control.setLabel(label);
     	
     }
     
